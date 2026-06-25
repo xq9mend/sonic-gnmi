@@ -64,6 +64,7 @@ type TelemetryConfig struct {
 	IdleConnDuration         *int
 	GnmiVrf                  *string
 	Vrf                      *string
+	BindAddress              *string
 	EnableCrl                *bool
 	CrlExpireDuration        *int
 	CaCertLnk                *string
@@ -190,6 +191,7 @@ func setupFlags(fs *flag.FlagSet) (*TelemetryConfig, *gnmi.Config, error) {
 		IdleConnDuration:         fs.Int("idle_conn_duration", 5, "Seconds before server closes idle connections"),
 		GnmiVrf:                  fs.String("gnmi_vrf", "", "VRF name for gNMI server binding."),
 		Vrf:                      fs.String("vrf", "", "VRF name for ZMQ client binding."),
+		BindAddress:              fs.String("bind_address", "", "Address to bind the gRPC TCP listener. Empty binds all interfaces. Use 127.0.0.1 to restrict to localhost."),
 		EnableCrl:                fs.Bool("enable_crl", false, "Enable certificate revocation list"),
 		CrlExpireDuration:        fs.Int("crl_expire_duration", 86400, "Certificate revocation list cache expire duration"),
 		ImgDirPath:               fs.String("img_dir", "/tmp/host_tmp", "Directory path where image will be transferred."),
@@ -273,6 +275,7 @@ func setupFlags(fs *flag.FlagSet) (*TelemetryConfig, *gnmi.Config, error) {
 	cfg.ConfigTableName = *telemetryCfg.ConfigTableName
 	cfg.GnmiVrf = *telemetryCfg.GnmiVrf
 	cfg.Vrf = *telemetryCfg.Vrf
+	cfg.BindAddress = *telemetryCfg.BindAddress
 	cfg.EnableCrl = *telemetryCfg.EnableCrl
 	cfg.CaCertLnk = *telemetryCfg.CaCertLnk
 	cfg.CaCertFile = *telemetryCfg.CaCert
